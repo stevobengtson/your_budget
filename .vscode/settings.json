@@ -8,8 +8,8 @@
             "name": "YourBudget",
             "group": "Docker",
             "database": "yourbudget",
-            "username": "postgres",
-            "password": "password"
+            "username": "steven",
+            "password": "8h45f47u"
         }
     ]
 }
