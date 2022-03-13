@@ -1,6 +1,6 @@
 [submodule "api"]
-	path = api
-	url = git@github.com:stevobengtson/your_budget_api.git
+path = api
+url = git@gitlab.com:stevoben/your_budget_api.git
 [submodule "web"]
-	path = web
-	url = git@github.com:stevobengtson/your_budget_web.git
+path = web
+url = git@gitlab.com:stevoben/your_budget_web.git
