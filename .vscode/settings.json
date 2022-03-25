@@ -8,8 +8,8 @@
             "name": "YourBudget",
             "group": "Docker",
             "database": "yourbudget",
-            "username": "steven",
-            "password": "8h45f47u"
+            "username": "yourbudget",
+            "password": "yourbudget!1234"
         }
     ]
 }

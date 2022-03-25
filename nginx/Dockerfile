@@ -1,7 +1,2 @@
-FROM nginx:alpine
-
-WORKDIR /var/www
-
-CMD ["nginx"]
-
-EXPOSE 80 443
+FROM nginx:alpine 
+COPY ./default.conf /etc/nginx/conf.d/default.conf 
