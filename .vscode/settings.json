@@ -10,6 +10,17 @@
             "database": "yourbudget",
             "username": "yourbudget",
             "password": "yourbudget!1234"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "Local - PG13",
+            "group": "Local",
+            "database": "postgres",
+            "username": "postgres",
+            "password": "8h45f47u"
         }
     ]
 }

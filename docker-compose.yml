@@ -28,6 +28,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./web/:/usr/src/app/api/
+      - /usr/src/app/api/node_modules
 
   php:
     build: ./api/
@@ -39,13 +40,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./api/:/var/www/html/
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
-      TRUSTED_PROXIES: ${TRUSTED_PROXIES:-127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16}
-      TRUSTED_HOSTS: ${TRUSTED_HOSTS:-^(example\.com|localhost)$}
-      JWT_PASSPHRASE: ${JWT_PASSPHRASE:-!ChangeMe!}
-      APP_SECRET: ${APP_SECRET:-"!ChangeMe!"}
-      CORS_ALLOW_ORIGIN: ${CORS_ALLOW_ORIGIN:-'^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'}
+      - ./api/docker-entrypoint:/usr/local/bin/docker-entrypoint
 
   database:
     image: postgres:${POSTGRES_VERSION:-13}-alpine
