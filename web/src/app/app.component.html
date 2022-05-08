@@ -1,0 +1,45 @@
+<block-ui>
+  <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+    <button mat-button routerLink="/">
+      <mat-icon>home</mat-icon>
+    </button>
+    <span *ngIf="userData">{{userData.email}}</span>
+    <span class="example-spacer"></span>
+    <span>{{title}}</span>
+    <span class="example-spacer"></span>
+    <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+      <button mat-raised-button routerLink="/login" *ngIf="!isAuthenticated">
+        Login
+      </button>
+      &nbsp;
+      <button mat-raised-button routerLink="/register" *ngIf="!isAuthenticated">
+        Sign Up
+      </button>
+      <button mat-raised-button *ngIf="isAuthenticated" (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        Logout
+      </button>
+      <button mat-raised-button (click)="clearCache()">
+        <mat-icon>cached</mat-icon>
+        Clear Cache
+      </button>
+    </div>
+    <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
+      <mat-icon>menu</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-menu x-position="before" #menu="matMenu">
+    <button mat-menu-item routerLink="/login" *ngIf="!isAuthenticated">
+      <mat-icon>power_settings_new</mat-icon>
+      Login
+    </button>
+    <button mat-menu-item routerLink="/register" *ngIf="!isAuthenticated">
+      Sign Up
+    </button>
+    <button mat-menu-item *ngIf="isAuthenticated" (click)="logout()">
+      <mat-icon>exit_to_app</mat-icon>
+      Logout
+    </button>
+  </mat-menu>
+  <router-outlet></router-outlet>
+</block-ui>

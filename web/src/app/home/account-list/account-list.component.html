@@ -1,0 +1,7 @@
+<ng-template *ngIf="accounts.length == 0">
+    <div>Loading accounts...</div>
+</ng-template>
+
+<mat-list-option *ngFor="let account of accounts" [value]="account">
+    <div mat-line (click)="pickAccount(account.id)">{{account.name}}</div>
+</mat-list-option>

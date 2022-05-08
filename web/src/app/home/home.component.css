@@ -1,0 +1,19 @@
+.home-container {
+    position: absolute;
+    top: 64px;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+}
+
+.home-sidenav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    padding: 5px;
+}
+
+.home-content {
+    padding: 5px;
+}

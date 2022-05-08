@@ -1,0 +1,19 @@
+.budget-container {
+    position: absolute;
+    top: 64px;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+}
+
+.budget-sidenav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    padding: 5px;
+}
+
+.budget-content {
+    padding: 5px;
+}

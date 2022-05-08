@@ -1,0 +1,17 @@
+.budget-dashboard {
+    margin-top: 10px;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.budget-card {
+    width: 200px;
+    height: 100px;
+    background-color: lightblue;
+}
+
+.budget-create-card {
+    margin-top: 10px;
+    width: 200px;
+    height: 100px;
+}

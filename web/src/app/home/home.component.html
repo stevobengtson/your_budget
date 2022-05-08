@@ -1,0 +1,14 @@
+<mat-sidenav-container class="home-container">
+    <mat-sidenav #sidenav mode="side" opened class="home-sidenav" [fixedInViewport]="false" [fixedTopGap]="0"
+        [fixedBottomGap]="0">
+        <app-sidebar *ngIf="budget" [budget]="budget"></app-sidebar>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="home-content">
+        <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <p>{{budget?.name}} - {{budget?.id}}</p>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

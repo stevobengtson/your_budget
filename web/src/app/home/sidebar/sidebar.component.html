@@ -1,0 +1,19 @@
+<h1>{{budget?.name}}</h1>
+<mat-selection-list [multiple]="false">
+    <mat-list-option value="1">
+        <div mat-line (click)="pickMenu(1)">Budget</div>
+    </mat-list-option>
+    <mat-list-option value="2">
+        <div mat-line (click)="pickMenu(2)">Reports</div>
+    </mat-list-option>
+    <mat-list-option value="3">
+        <div mat-line (click)="pickMenu(3)">All Accounts</div>
+    </mat-list-option>
+    <hr />
+    <app-account-list *ngIf="budget" [budgetId]="budget.id"></app-account-list>
+    <hr />
+    <button mat-raised-button (click)="addAccount()">
+        <mat-icon>add</mat-icon>
+        Add Account
+    </button>
+</mat-selection-list>
