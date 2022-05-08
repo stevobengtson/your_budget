@@ -1,0 +1,5 @@
+App\Entity\Budget:
+  test_budget:
+    user: '@test_user'
+    name: 'Current Budget'
+    startDate: <dateTime()>

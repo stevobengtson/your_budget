@@ -1,0 +1,5 @@
+App\Entity\Category:
+  test_category:
+    budget: '@test_budget'
+    name: "Test Category"
+    category_group: "@"

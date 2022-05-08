@@ -1,0 +1,4 @@
+App\Entity\Payee:
+  test_payee:
+    budget: '@test_budget'
+    name: "Test Payee"
