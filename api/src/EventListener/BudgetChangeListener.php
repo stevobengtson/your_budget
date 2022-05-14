@@ -14,8 +14,8 @@ class BudgetChangeListener
 
     public function prePersist(Budget $budget, LifecycleEventArgs $args): void
     {
-        if ($budget->user == null) {
-            $budget->user = $this->security->getUser();
+        if ($budget->getUser() == null) {
+            $budget->setUser($this->security->getUser());
         }
     }
 }

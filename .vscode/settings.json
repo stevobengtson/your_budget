@@ -22,5 +22,6 @@
             "username": "postgres",
             "password": "8h45f47u"
         }
-    ]
+    ],
+    "phpstan.level": "0"
 }

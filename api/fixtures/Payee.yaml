@@ -1,4 +1,4 @@
 App\Entity\Payee:
-  test_payee:
-    budget: '@test_budget'
-    name: "Test Payee"
+  test_payee_{1..200}:
+    budget: '@test_budget*'
+    name: <words(3, true)>

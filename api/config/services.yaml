@@ -40,3 +40,5 @@ services:
     App\EventListener\BudgetChangeListener:
         tags:
             - { name: doctrine.orm.entity_listener, event: prePersist, entity: 'App\Entity\Budget' }
+
+    App\DataFixtures\Processor\TransactionProcessor: ~

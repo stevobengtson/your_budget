@@ -4,17 +4,17 @@
 
     <ng-container matColumnDef="date">
         <th mat-header-cell *matHeaderCellDef> DATE </th>
-        <td mat-cell *matCellDef="let transaction"> {{transaction.date}} </td>
+        <td mat-cell *matCellDef="let transaction"> {{ transaction.date|date }} </td>
     </ng-container>
 
     <ng-container matColumnDef="payee">
         <th mat-header-cell *matHeaderCellDef> PAYEE </th>
-        <td mat-cell *matCellDef="let transaction"> {{transaction.payee}} </td>
+        <td mat-cell *matCellDef="let transaction"> {{transaction.payee?.name}} </td>
     </ng-container>
 
     <ng-container matColumnDef="category">
         <th mat-header-cell *matHeaderCellDef> CATEGORY </th>
-        <td mat-cell *matCellDef="let transaction"> {{transaction.category}} </td>
+        <td mat-cell *matCellDef="let transaction"> {{transaction.category?.name}} </td>
     </ng-container>
 
     <ng-container matColumnDef="memo">
@@ -24,12 +24,22 @@
 
     <ng-container matColumnDef="credit">
         <th mat-header-cell *matHeaderCellDef> CREDIT </th>
-        <td mat-cell *matCellDef="let transaction"> {{transaction.credit}} </td>
+        <td mat-cell *matCellDef="let transaction"> {{transaction.credit|currency}} </td>
     </ng-container>
     
     <ng-container matColumnDef="debit">
         <th mat-header-cell *matHeaderCellDef> DEBIT </th>
-        <td mat-cell *matCellDef="let transaction"> {{transaction.debit}} </td>
+        <td mat-cell *matCellDef="let transaction"> {{transaction.debit|currency}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cleared">
+        <th mat-header-cell *matHeaderCellDef> C </th>
+        <td mat-cell *matCellDef="let transaction">
+            <mat-checkbox
+                [checked]="transaction.cleared"
+                [color]="'primary'">
+            </mat-checkbox>    
+        </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

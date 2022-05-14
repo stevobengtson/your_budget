@@ -1,4 +1,4 @@
 App\Entity\CategoryGroup:
-  test_category_group:
-    name: "Test Category Group"
-    assigned: 0.00
+  test_categorygroup_{1..50}:
+    name: <words(3, true)>
+    assigned: <randomFloat(2)>

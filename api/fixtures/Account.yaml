@@ -2,5 +2,10 @@ App\Entity\Account:
   test_account:
     name: "Chequing"
     description: "This is a test account"
-    balance: 500.00
+    balance: <randomFloat(2)>
     budget: '@test_budget'
+  test_account_{2..20}:
+    name: <word()>
+    description: <sentence()>
+    balance: <randomFloat(2)>
+    budget: '@test_budget_*'

@@ -2,4 +2,6 @@ App\Entity\Budget:
   test_budget:
     user: '@test_user'
     name: 'Current Budget'
-    startDate: <dateTime()>
+  test_budget_{2..10}:
+    user: '@test_user'
+    name: <words(3, true)>

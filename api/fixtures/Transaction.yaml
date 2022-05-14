@@ -1,0 +1,10 @@
+App\Entity\Transaction:
+  test_transaction_{1..1000}:
+    account: '@test_account*'
+    date: <dateTime()>
+    memo: '25%? <sentence()>'
+    payee: '@test_payee_*'
+    category: '@test_category_*'
+    credit: '25%? <randomFloat(2)>'
+    debit: '<randomFloat(2)>'
+    cleared: <boolean()>

@@ -1,12 +1,12 @@
 App\Entity\User:
   admin_user:
     email: "admin@test.com"
-    password: "$2y$13$F1xoCv6xGzdpFLQlsQes3ex7.0Zv4x1V6yYiy3v7w7dt9vuu/4AhG"
+    password: '\$2y\$13\$F1xoCv6xGzdpFLQlsQes3ex7.0Zv4x1V6yYiy3v7w7dt9vuu/4AhG'
     roles:
       - ROLE_USER
       - ROLE_ADMIN
   test_user:
     email: "test@test.com"
-    password: "$2y$13$F1xoCv6xGzdpFLQlsQes3ex7.0Zv4x1V6yYiy3v7w7dt9vuu/4AhG"
+    password: '\$2y\$13\$F1xoCv6xGzdpFLQlsQes3ex7.0Zv4x1V6yYiy3v7w7dt9vuu/4AhG'
     roles:
       - ROLE_USER

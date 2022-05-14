@@ -4,48 +4,193 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity]
 #[ORM\Table(name: '`transaction`')]
-#[ApiResource()]
+#[ApiResource(
+    normalizationContext: [ 'groups' => ['transaction:read']],
+    denormalizationContext: [ 'groups' => ['transaction:write']]
+)]
 class Transaction
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    /**
-     * @var \Ramsey\Uuid\UuidInterface
-     */
-    private $id;
+    #[Groups(['transaction:read', 'account:read'])]
+    private \Ramsey\Uuid\UuidInterface $id;
 
     #[ORM\ManyToOne(targetEntity: 'Account', inversedBy: 'transactions', cascade: ['persist', 'remove'])]
-    public ?Account $account = null;
+    #[Groups(['transaction:read'])]
+    private ?Account $account;
 
-    #[ORM\Column(type: 'datetime')]
-    public ?\DateTimeInterface $date = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['transaction:read', 'transaction:write', 'account:read'])]
+    private ?\DateTimeInterface $date;
 
-    #[ORM\OneToOne(targetEntity: 'Payee')]
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    #[Groups(['transaction:read', 'transaction:write', 'account:read'])]
+    private ?string $memo;   
+
+    #[ORM\ManyToOne(targetEntity: 'Payee', cascade: ['persist'])]
     #[ApiSubresource(maxDepth: 1)]
-    public ?Payee $payee = null;
+    #[Groups(['transaction:read', 'transaction:write', 'account:read'])]
+    private ?Payee $payee;
 
-    #[ORM\OneToOne(targetEntity: 'Category')]
+    #[ORM\ManyToOne(targetEntity: 'Category', cascade: ['persist'])]
     #[ApiSubresource(maxDepth: 1)]
-    public ?Category $category = null;
+    #[Groups(['transaction:read', 'transaction:write', 'account:read'])]
+    private ?Category $category;
 
-    #[ORM\Column(type: 'decimal', precision: 12, scale: 3, nullable: false)]
-    public float $credit = 0.0;
+    #[ORM\Column(type: Types::DECIMAL, precision: 12, scale: 3, nullable: true)]
+    #[Groups(['transaction:read', 'transaction:write', 'account:read'])]
+    private ?float $credit;
 
-    #[ORM\Column(type: 'decimal', precision: 12, scale: 3, nullable: false)]
-    public float $debit = 0.0;
+    #[ORM\Column(type: Types::DECIMAL, precision: 12, scale: 3, nullable: true)]
+    #[Groups(['transaction:read', 'transaction:write', 'account:read'])]
+    private ?float $debit;
 
-    #[ORM\Column(type: 'boolean', nullable: false)]
-    public bool $cleared = false;
+    #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
+    #[Groups(['transaction:read', 'transaction:write', 'account:read'])]
+    public bool $cleared;
 
-    public function getId()
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Gedmo\Timestampable(on: 'create')]
+    #[Groups(['account:read'])]
+    private \DateTime $created;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Gedmo\Timestampable(on: 'update')]
+    #[Groups(['account:read'])]
+    private \DateTime $updated;
+
+    public function getId(): \Ramsey\Uuid\UuidInterface
     {
         return $this->id;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getCleared(): ?bool
+    {
+        return $this->cleared;
+    }
+
+    public function setCleared(bool $cleared): self
+    {
+        $this->cleared = $cleared;
+
+        return $this;
+    }
+
+    public function getAccount(): ?Account
+    {
+        return $this->account;
+    }
+
+    public function setAccount(?Account $account): self
+    {
+        $this->account = $account;
+
+        return $this;
+    }
+
+    public function getPayee(): ?Payee
+    {
+        return $this->payee;
+    }
+
+    public function setPayee(?Payee $payee): self
+    {
+        $this->payee = $payee;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getCreated(): ?\DateTimeInterface
+    {
+        return $this->created;
+    }
+
+    public function setCreated(\DateTimeInterface $created): self
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    public function getUpdated(): ?\DateTimeInterface
+    {
+        return $this->updated;
+    }
+
+    public function setUpdated(\DateTimeInterface $updated): self
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    public function getCredit(): ?string
+    {
+        return $this->credit;
+    }
+
+    public function setCredit(?string $credit): self
+    {
+        $this->credit = $credit;
+
+        return $this;
+    }
+
+    public function getDebit(): ?string
+    {
+        return $this->debit;
+    }
+
+    public function setDebit(?string $debit): self
+    {
+        $this->debit = $debit;
+
+        return $this;
+    }
+
+    public function getMemo(): ?string
+    {
+        return $this->memo;
+    }
+
+    public function setMemo(?string $memo): self
+    {
+        $this->memo = $memo;
+
+        return $this;
     }
 }

@@ -8,19 +8,16 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { CacheInterceptor } from './interceptors/cache.interceptor';
 // Components
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
 // Modules
 import { SharedModule } from './shared/shared.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { HomeModule } from './home/home.module';
 import { BudgetModule } from './budget/budget.module';
+import { UserModule } from './user/user.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -28,6 +25,7 @@ import { BudgetModule } from './budget/budget.module';
     BrowserAnimationsModule,
     HttpClientModule,
     SharedModule,
+    UserModule,
     DashboardModule,
     HomeModule,
     BudgetModule

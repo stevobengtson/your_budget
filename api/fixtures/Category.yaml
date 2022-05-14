@@ -1,5 +1,5 @@
 App\Entity\Category:
-  test_category:
-    budget: '@test_budget'
-    name: "Test Category"
-    category_group: "@"
+  test_category_{1..200}:
+    budget: '@test_budget*'
+    name: <words(3, true)>
+    category_group: "@test_categorygroup_*"

@@ -15,6 +15,6 @@ export class BudgetGuard implements CanActivate {
     }
 
     this.authService.redirectUrl = state.url;
-    return this.router.parseUrl('/login');
+    return this.router.parseUrl('/user/login');
   }
 }

@@ -21,4 +21,8 @@ export class AccountApiService {
     getBudgetAccounts(budgetId: string) {
         return this.http.get<AccountCollection>(environment.apiUrl + '/budgets/' + budgetId + '/accounts');
     }
+
+    get(id: string) {
+        return this.http.get<AccountData>(environment.apiUrl + '/accounts/' + id);
+    }
 }
