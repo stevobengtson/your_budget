@@ -5,7 +5,9 @@
 export const environment = {
   production: false,
   apiUrl: "",
-  httpCacheExpirationSeconds: 300
+  httpCacheExpirationSeconds: 300,
+  cacheQueries: false,
+  defaultPageLimit: 25,
 };
 
 /*

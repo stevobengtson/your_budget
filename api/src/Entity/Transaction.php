@@ -2,8 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -16,6 +22,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: [ 'groups' => ['transaction:read']],
     denormalizationContext: [ 'groups' => ['transaction:write']]
 )]
+#[ApiFilter(OrderFilter::class, properties: ['date' => 'asc', 'memo', 'credit', 'debit', 'cleared'])]
 class Transaction
 {
     #[ORM\Id]
@@ -27,36 +34,44 @@ class Transaction
 
     #[ORM\ManyToOne(targetEntity: 'Account', inversedBy: 'transactions', cascade: ['persist', 'remove'])]
     #[Groups(['transaction:read'])]
+    #[ApiFilter(SearchFilter::class, properties: ['account.name' => 'ipartial'])]
     private ?Account $account;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups(['transaction:read', 'transaction:write', 'account:read'])]
+    #[ApiFilter(DateFilter::class, strategy: DateFilter::EXCLUDE_NULL)]
     private ?\DateTimeInterface $date;
 
     #[ORM\Column(type: Types::STRING, nullable: true)]
     #[Groups(['transaction:read', 'transaction:write', 'account:read'])]
+    #[ApiFilter(SearchFilter::class, properties: ['memo' => 'ipartial'])]
     private ?string $memo;   
 
     #[ORM\ManyToOne(targetEntity: 'Payee', cascade: ['persist'])]
     #[ApiSubresource(maxDepth: 1)]
     #[Groups(['transaction:read', 'transaction:write', 'account:read'])]
+    #[ApiFilter(SearchFilter::class, properties: ['payee.name' => 'ipartial'])]
     private ?Payee $payee;
 
     #[ORM\ManyToOne(targetEntity: 'Category', cascade: ['persist'])]
     #[ApiSubresource(maxDepth: 1)]
     #[Groups(['transaction:read', 'transaction:write', 'account:read'])]
+    #[ApiFilter(SearchFilter::class, properties: ['category.name' => 'ipartial'])]
     private ?Category $category;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 12, scale: 3, nullable: true)]
     #[Groups(['transaction:read', 'transaction:write', 'account:read'])]
+    #[ApiFilter(NumericFilter::class)]
     private ?float $credit;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 12, scale: 3, nullable: true)]
     #[Groups(['transaction:read', 'transaction:write', 'account:read'])]
+    #[ApiFilter(NumericFilter::class)]
     private ?float $debit;
 
     #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
     #[Groups(['transaction:read', 'transaction:write', 'account:read'])]
+    #[ApiFilter(BooleanFilter::class)]
     public bool $cleared;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
