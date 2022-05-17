@@ -1,0 +1,43 @@
+<h1 mat-dialog-title><strong>{{action}}</strong> Transaction</h1>
+<form [formGroup]="transactionForm" (ngSubmit)="onSubmit(transactionForm)">
+    <div mat-dialog-content>
+        <mat-form-field apperance="legacy" floatLabel="always">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker> 
+        </mat-form-field>      
+        <mat-form-field apperance="legacy" floatLabel="always">
+            <mat-label>Payee</mat-label>
+            <mat-select formControlName="payee">
+            <mat-option value="/payees/9922e508-6e41-4436-8189-56e098f1693c">et cum eius</mat-option>
+            <mat-option value="/payees/046be182-b6e8-42e5-8bfa-9aa3b4f162fa">nesciunt non dolore</mat-option>
+            </mat-select>        
+        </mat-form-field>
+        <mat-form-field apperance="legacy" floatLabel="always">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="category">
+                <mat-option value="/categories/baa66f2a-3653-4e77-8a39-fd62cec52fb7">et ad rerum</mat-option>
+                <mat-option value="/categories/a6416972-8d84-4374-99f6-8d406c9e0e26">atque odio inventore</mat-option>
+            </mat-select> 
+        </mat-form-field>
+        <mat-form-field apperance="legacy" floatLabel="always">
+            <mat-label>Memo</mat-label>
+            <input matInput formControlName="memo">
+        </mat-form-field>
+        <mat-form-field apperance="legacy" floatLabel="always">
+            <mat-label>Amount</mat-label>
+            <input currencyMask matInput formControlName="amount">
+        </mat-form-field>
+        <mat-form-field apperance="legacy" floatLabel="always" apperence="none">
+            <mat-label>Cleared</mat-label>
+            <mat-slide-toggle formControlName="cleared" color="primary"></mat-slide-toggle>
+            <textarea matInput hidden></textarea>
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button type="submit">{{action}}</button>
+        <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+    </div>
+</form>

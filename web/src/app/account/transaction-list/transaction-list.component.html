@@ -1,10 +1,5 @@
-<h3>{{accountId}}</h3>
-
-<div class="example-container mat-elevation-z8">
-    <div class="example-loading-shade" *ngIf="isLoadingResults">
-        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-    </div>
-
+<div class="example-container">
+    <button mat-button (click)="openDialog('Add',{})" mat-flat-button color="primary">Add Transaction</button>
     <div class="example-table-container">
         <table mat-table [dataSource]="transactions" class="example-table" matSort matSortActive="date" matSortDisableClear matSortDirection="desc">
 
@@ -41,13 +36,19 @@
             <ng-container matColumnDef="cleared">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> C </th>
                 <td mat-cell *matCellDef="let transaction">
-                    <mat-checkbox
-                        [checked]="transaction.cleared"
-                        [color]="'primary'">
-                    </mat-checkbox>    
+                    <mat-checkbox [checked]="transaction.cleared" [color]="'primary'"></mat-checkbox>    
                 </td>
             </ng-container>
 
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let transaction" class="action-link"> 
+                    <a href="#" (click)="openDialog('Update', transaction); false;"><mat-icon aria-hidden="false" aria-label="Edit">edit</mat-icon></a>&nbsp;
+                    <a href="#" (click)="openDialog('Delete', transaction); false;"><mat-icon aria-hidden="false" aria-label="Delete">delete</mat-icon></a>  
+                </td>
+            </ng-container>
+            
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>

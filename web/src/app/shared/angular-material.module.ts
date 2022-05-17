@@ -34,6 +34,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 const materialModules = [
     CdkTreeModule,
@@ -69,7 +71,9 @@ const materialModules = [
     MatRadioModule,
     MatDatepickerModule,
     MatTooltipModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatNativeDateModule,
+    MatSlideToggleModule,
 ];
 @NgModule({
     imports: [
