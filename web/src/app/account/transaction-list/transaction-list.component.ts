@@ -16,6 +16,7 @@ import { BlockUIService } from '../../services/block-ui.service';
 })
 export class TransactionListComponent implements AfterViewInit {
     @Input() accountId: string = '';
+    @Input() accountName: string | undefined = '';
 
     public displayedColumns: string[] = ['date', 'payee', 'category', 'memo', 'debit', 'credit', 'cleared', 'action'];
     public transactions: TransactionData[] = [];

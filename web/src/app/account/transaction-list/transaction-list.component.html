@@ -1,5 +1,13 @@
+<mat-toolbar>
+    <span>{{ accountName }}</span>
+    <span class="example-spacer"></span>
+    <span>Cleared Balance: $5687.93</span>
+    &nbsp;+&nbsp;<span>Uncleared Balance: $5687.93</span>
+    &nbsp;=&nbsp;<span>Working Balance: $5687.93</span>
+    <span class="example-spacer"></span>
+    <button mat-button (click)="openDialog('Add',{})" mat-flat-button color="primary"><mat-icon>add</mat-icon> Add Transaction</button>
+</mat-toolbar>
 <div class="example-container">
-    <button mat-button (click)="openDialog('Add',{})" mat-flat-button color="primary">Add Transaction</button>
     <div class="example-table-container">
         <table mat-table [dataSource]="transactions" class="example-table" matSort matSortActive="date" matSortDisableClear matSortDirection="desc">
 

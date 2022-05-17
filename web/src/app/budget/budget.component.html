@@ -1,12 +1,11 @@
 <mat-sidenav-container class="budget-container">
-    <mat-sidenav #sidenav mode="side" opened class="budget-sidenav" [fixedInViewport]="options.value.fixed"
-        [fixedTopGap]="options.value.top" [fixedBottomGap]="options.value.bottom">
+    <mat-sidenav #sidenav mode="side" opened class="budget-sidenav" [fixedInViewport]="options.value.fixed" [fixedTopGap]="options.value.top" [fixedBottomGap]="options.value.bottom">
         <div *ngIf="budget">
             <p>{{budget.name}}</p>
-            </div>
+        </div>
     </mat-sidenav>
     
     <mat-sidenav-content [formGroup]="options" class="budget-content">
-        <p><button mat-button (click)="sidenav.toggle()">Toggle</button></p>
+        <!-- <p><button mat-button (click)="sidenav.toggle()">Toggle</button></p> -->
     </mat-sidenav-content>
 </mat-sidenav-container>
