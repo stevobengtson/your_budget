@@ -50,10 +50,10 @@ export class AddTransactionDialogComponent {
       this.transactionForm.controls['memo'].setValue(data.memo);
     }
     if (data.credit) {
-      this.transactionForm.controls['amount'].setValue(data.credit);
+      this.transactionForm.controls['amount'].setValue(parseFloat(data.credit));
     }
     if (data.debit) {
-      this.transactionForm.controls['amount'].setValue(data.debit);
+      this.transactionForm.controls['amount'].setValue(-1 * parseFloat(data.debit));
     }
     if (data.cleared) {
       this.transactionForm.controls['cleared'].setValue(data.cleared);
