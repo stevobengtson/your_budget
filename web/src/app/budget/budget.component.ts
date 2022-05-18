@@ -44,15 +44,19 @@ export class BudgetComponent implements OnInit {
     }
 
     private loadBudgets(): void {
-        this.budgetApiService.getUserBudgets(this.userId).subscribe((budgets: BudgetCollection) => {
-            if (budgets["hydra:member"].length > 0) {
-                // Pick the first one for now
-                this.budget = budgets["hydra:member"][0];
-            }
-            this.blockUIService.unblock();
-        }, (error: any) => {
-            console.log(error);
-            this.blockUIService.unblock();
-        });
+        this.budgetApiService
+            .getListFromResource('users', this.userId)
+            .subscribe({
+                next: (budgets: BudgetCollection) => {
+                    if (budgets["hydra:member"].length > 0) {
+                        // Pick the first one for now
+                        this.budget = budgets["hydra:member"][0];
+                    }
+                },
+                error: (error: any) => {
+                    console.log(error);
+                },
+                complete: () => this.blockUIService.unblock()
+            });
     }
 }

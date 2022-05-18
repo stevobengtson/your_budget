@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from "@angular/core";
 import { Router } from "@angular/router";
-import { BudgetManagerService } from "src/app/services/budget-manager.service";
 import { AccountApiService, AccountCollection, AccountData } from "../../services/api/account-api.service";
 
 @Component({
@@ -35,8 +34,8 @@ export class AccountListComponent implements OnChanges {
     }
 
     private loadAccounts(): void {
-        this.accountApiService.getBudgetAccounts(this.budgetId).subscribe((accounts: AccountCollection) => {
-            this.accounts = accounts["hydra:member"];
-        });
+        this.accountApiService
+            .getListFromResource('budgets', this.budgetId)
+            .subscribe((accounts: AccountCollection) => this.accounts = accounts["hydra:member"]);
     }
 }

@@ -1,8 +1,8 @@
 export interface BaseData {
-    "@context": string;
-    "@id": string;
-    "@type": string;
-    id: string;
+    "@context"?: string;
+    "@id"?: string;
+    "@type"?: string;
+    id?: string;
 }
 
 export interface HydraView {

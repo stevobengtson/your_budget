@@ -1,7 +1,6 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BaseCollection, BaseData } from "./base-data.interface";
-import { environment } from "../../../environments/environment";
+import { BaseApiService } from "./base-api.service";
 
 export interface AccountData extends BaseData {
     name: string;
@@ -15,14 +14,6 @@ export interface AccountCollection extends BaseCollection<AccountData> {
 @Injectable({
     providedIn: 'root'
 })
-export class AccountApiService {
-    constructor(private http: HttpClient) { }
-
-    getBudgetAccounts(budgetId: string) {
-        return this.http.get<AccountCollection>(environment.apiUrl + '/budgets/' + budgetId + '/accounts');
-    }
-
-    get(id: string) {
-        return this.http.get<AccountData>(environment.apiUrl + '/accounts/' + id);
-    }
+export class AccountApiService extends BaseApiService<AccountData, AccountCollection> {
+    override basePath = "accounts";
 }

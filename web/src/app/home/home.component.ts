@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BudgetApiService, BudgetData } from '../services/api/budget-api.service';
-import { BudgetManagerService } from '../services/budget-manager.service';
 
 @Component({
     selector: 'app-home',
@@ -15,14 +14,12 @@ export class HomeComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private budgetApiService: BudgetApiService,
-        private budgetManagerService: BudgetManagerService
     ) { }
 
     ngOnInit(): void {
         this.budgetId = this.route.snapshot.paramMap.get('id') ?? '';
-        this.budgetApiService.get(this.budgetId).subscribe((budget: BudgetData) => {
+        this.budgetApiService.getItem(this.budgetId).subscribe((budget: BudgetData) => {
             this.budget = budget;
-            this.budgetManagerService.budget = budget;
         });
     }
 }

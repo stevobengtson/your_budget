@@ -4,9 +4,9 @@
       <mat-icon>home</mat-icon>
     </button>
     <span *ngIf="userData">{{userData.email}}</span>
-    <span class="example-spacer"></span>
+    <span class="toolbar-spacer"></span>
     <span>{{title}}</span>
-    <span class="example-spacer"></span>
+    <span class="toolbar-spacer"></span>
     <div fxLayout="row" fxShow="false" fxShow.gt-sm>
       <button mat-raised-button routerLink="/login" *ngIf="!isAuthenticated">
         Login

@@ -14,7 +14,10 @@ export class RegisterComponent {
     constructor(private userApiService: UserApiService, private router: Router) { }
 
     public onSubmit(): void {
-        this.userApiService.create(this.email, this.password).subscribe((user: UserData) => {
+        this.userApiService.create({
+            email: this.email,
+            password: this.password
+        }).subscribe(() => {
             this.router.navigate(['/login']);
         });
     }

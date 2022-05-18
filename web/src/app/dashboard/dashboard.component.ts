@@ -27,10 +27,12 @@ export class DashboardComponent implements OnInit {
         this.userId = this.authService.userData?.id || '';
         if (this.userId !== '') {
             this.blockUIService.block();
-            this.budgetApiService.getUserBudgets(this.userId).subscribe((budgets: BudgetCollection) => {
-                this.budgets = budgets["hydra:member"];
-                this.blockUIService.unblock();
-            });
+            this.budgetApiService
+                .getListFromResource('users', this.userId)
+                .subscribe({
+                    next: (budgets: BudgetCollection) => this.budgets = budgets["hydra:member"],
+                    complete: () => this.blockUIService.unblock()
+                });
         } else {
             console.log("Route me to the login page.");
         }
@@ -42,12 +44,11 @@ export class DashboardComponent implements OnInit {
 
     public createBudget(): void {
         const dialogRef = this.dialog.open(CreateBudgetComponent, {
-            width: '450px',
             data: {},
         });
 
         dialogRef.afterClosed().subscribe((result: BudgetData) => {
-            this.budgetApiService.create(result.name, this.userId).subscribe((budget: BudgetData) => {
+            this.budgetApiService.create(result).subscribe((budget: BudgetData) => {
                 this.budgets?.push(budget);
             });
         });

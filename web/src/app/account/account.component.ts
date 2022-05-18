@@ -16,9 +16,7 @@ export class AccountComponent {
     ngOnInit(): void {
         this.accountId = this.route.snapshot.paramMap.get('account_id');
         if (this.accountId !== null) {
-            this.accountApiService.get(this.accountId).subscribe((account: AccountData) => {
-                this.account = account;
-            });
+            this.accountApiService.getItem(this.accountId).subscribe((account: AccountData) => this.account = account);
         }
      }
 }
