@@ -8,6 +8,7 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { AddTransactionDialogComponent } from "./account-transaction-list-add-transaction-dialog/add-transaction-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { BlockUIService } from '../../services/block-ui.service';
+import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
     selector: 'app-transaction-list',
@@ -19,10 +20,10 @@ export class TransactionListComponent implements AfterViewInit {
     @Input() accountName: string | undefined = '';
 
     public displayedColumns: string[] = ['date', 'payee', 'category', 'memo', 'debit', 'credit', 'cleared', 'action'];
-    public transactions: TransactionData[] = [];
     public resultsLength = 0;
     public isLoadingResults = true;
 
+    dataSource = new MatTableDataSource<TransactionData>();
     @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
     @ViewChild(MatSort, {static: false}) sort!: MatSort;
 
@@ -59,7 +60,7 @@ export class TransactionListComponent implements AfterViewInit {
             return data["hydra:member"];
           }),
         )
-        .subscribe(data => (this.transactions = data));
+        .subscribe(data => (this.dataSource.data = data));
     }
 
     openDialog(action: any, obj: any) {
@@ -71,9 +72,9 @@ export class TransactionListComponent implements AfterViewInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result.event == 'Add') {
           this.addRowData(result.data);
-        } else if(result.event == 'Update') {
+        } else if (result.event == 'Update') {
           this.updateRowData(result.data);
-        } else if(result.event == 'Delete') {
+        } else if (result.event == 'Delete') {
           this.deleteRowData(result.data);
         }
       });
@@ -88,23 +89,54 @@ export class TransactionListComponent implements AfterViewInit {
         return this.transactionApiService.getListFromResource('accounts', this.accountId, filter);
     }
 
-    addRowData(row_obj: TransactionData) {
-      console.log('Add', row_obj);
-      // Store in database
-      // Add results to the transacton list
-      // How to ensure it is in the correct spot?
+    addRowData(row: TransactionData) {
+      this.transactionApiService.create({
+        account: '/accounts/' + this.accountId,
+        date: row.date,
+        memo: row.memo,
+        payee: row.payee,
+        category: row.category,
+        credit: this.transactionApiService.toStringOrNull(row.credit),
+        debit: this.transactionApiService.toStringOrNull(row.debit),
+        cleared: !!row.cleared
+      }).subscribe({
+        next: (data: TransactionData) => {
+          this.dataSource.data = [data, ...this.dataSource.data];
+        },
+        error: (err: any) => console.log(err)
+      });
     }
 
-    updateRowData(row_obj: TransactionData) {
-      console.log('Update', row_obj);
-      // Store in database
-      // Find entry in transaction list
-      // Update list data
+    updateRowData(row: TransactionData) {
+      if (row.id === undefined) {
+        return;
+      }
+
+      this.transactionApiService.update(row.id, {
+        account: '/accounts/' + this.accountId,
+        date: row.date,
+        memo: row.memo,
+        payee: row.payee,
+        category: row.category,
+        credit: this.transactionApiService.toStringOrNull(row.credit),
+        debit: this.transactionApiService.toStringOrNull(row.debit),
+        cleared: !!row.cleared
+      }).subscribe({
+        next: (data: TransactionData) => {
+          row = data;
+        },
+        error: (err: any) => console.log(err)
+      });
     }
 
-    deleteRowData(row_obj: TransactionData) {
-      console.log('Delete', row_obj);
-      // Delete from database
-      // Remove entry from list
+    deleteRowData(row: TransactionData) {
+      if (row.id === undefined) {
+        return;
+      }
+
+      this.transactionApiService.delete(row.id).subscribe({
+        next: () => this.dataSource.data = this.dataSource.data.filter((data: TransactionData) => data.id !== row.id),
+        error: (err: any) => console.log(err)
+      });
     }
 }

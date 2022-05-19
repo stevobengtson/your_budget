@@ -2,8 +2,10 @@ import { Component, Inject, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
+import { TransactionData } from 'src/app/services/api/transaction-api.service';
 
 interface TransactionDialogData {
+  id?: string;
   date: Date;
   payee: string;
   category: string;
@@ -31,11 +33,14 @@ export class AddTransactionDialogComponent {
     cleared: [''],
   });
 
+  transactionId?: string;
+
   constructor(
     public dialogRef: MatDialogRef<AddTransactionDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: TransactionDialogData,
     private fb: FormBuilder
   ) {
+    this.transactionId = data.id;
     this.transactionForm.controls['date'].setValue(new Date());
     if (data.date) {
       this.transactionForm.controls['date'].setValue(data.date);
@@ -64,6 +69,7 @@ export class AddTransactionDialogComponent {
   onSubmit(form: FormGroup) {
     if (form.valid) {
       this.dialogRef.close({event: this.action, data: {
+        id: this.transactionId,
         date: form.value.date,
         payee: form.value.payee,
         category: form.value.category,

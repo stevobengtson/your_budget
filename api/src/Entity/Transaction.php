@@ -33,7 +33,7 @@ class Transaction
     private \Ramsey\Uuid\UuidInterface $id;
 
     #[ORM\ManyToOne(targetEntity: 'Account', inversedBy: 'transactions', cascade: ['persist', 'remove'])]
-    #[Groups(['transaction:read'])]
+    #[Groups(['transaction:read', 'transaction:write'])]
     #[ApiFilter(SearchFilter::class, properties: ['account.name' => 'ipartial'])]
     private ?Account $account;
 

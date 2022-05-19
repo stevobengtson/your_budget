@@ -8,8 +8,8 @@ export interface TransactionData extends BaseData {
     memo: string,
     payee: string,
     category: string,
-    credit: string,
-    debit: string,
+    credit: string | null,
+    debit: string | null,
     cleared: boolean
 }
 

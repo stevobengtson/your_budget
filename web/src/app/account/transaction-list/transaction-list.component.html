@@ -9,7 +9,7 @@
 </mat-toolbar>
 <div class="example-container">
     <div class="example-table-container">
-        <table mat-table [dataSource]="transactions" class="example-table" matSort matSortActive="date" matSortDisableClear matSortDirection="desc">
+        <table mat-table [dataSource]="dataSource" class="example-table" matSort matSortActive="date" matSortDisableClear matSortDirection="desc">
 
             <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> DATE </th>

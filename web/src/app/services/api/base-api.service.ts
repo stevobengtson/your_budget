@@ -49,7 +49,71 @@ export class Filter {
             return '';
         }
 
-        return  '?' + params.toString();        
+        return  params.toString();        
+    }
+}
+
+export class UrlBuilder {
+    private basePath: string = '';
+    private uuid: string | null = null;
+    private preresource: string | null = null;
+    private preresourceUuid: string | null = null;
+    private subresource: string | null = null;
+    private filterDetails: string | null = null;
+
+    public constructor(basePath: string) {
+        this.basePath = basePath;
+    }
+
+    public get url(): string {
+        let fullUrl = environment.apiUrl;
+
+        if (this.preresource !== null) {
+            fullUrl += '/' + this.preresource + '/' + this.preresourceUuid;
+        }
+
+        fullUrl += '/' + this.basePath;
+
+        if (this.uuid !== null) {
+            fullUrl += '/' + this.uuid;
+        }
+
+        if (this.subresource !== null) {
+            fullUrl += '/' + this.subresource;
+        }
+
+        if (this.filterDetails !== null) {
+            fullUrl += '?' + this.filterDetails;
+        }
+
+        return fullUrl;
+    }
+
+    public addUuid(uuid: string | null): UrlBuilder {
+        this.uuid = uuid;
+        return this;
+    }
+
+    public addPreresource(preresource: string | null): UrlBuilder {
+        this.preresource = preresource;
+        return this;
+    }
+
+    public addPreresourceUuid(preresourceUuid: string | null): UrlBuilder {
+        this.preresourceUuid = preresourceUuid;
+        return this;
+    }
+
+    public addSubresource(subresource: string | null): UrlBuilder {
+        this.subresource = subresource;
+        return this;
+    }
+
+    public addFilter(filter: Filter | null = null): UrlBuilder {
+        if (filter !== null) {
+            this.filterDetails = filter.toString();
+        }
+        return this;
     }
 }
 
@@ -85,8 +149,7 @@ export class BaseApiService<T extends BaseData, C extends BaseCollection<T>> {
      * Select a single entity from the local collection if available.
      * @param id UUid of the data to select.
      */
-    selecteData(id: string): T | null
-    {
+    selecteData(id: string): T | null {
         if (this.dataCollection === null) {
             return null;
         }
@@ -96,11 +159,21 @@ export class BaseApiService<T extends BaseData, C extends BaseCollection<T>> {
         return data;
     }
 
+    toStringOrNull(value: any): string | null {
+        if (value === null) {
+            return null;
+        }
+        return value + '';
+    }
+
     /**
      * Get a list of entities from the API.
      */
     getList(filter: Filter | null = null): Observable<C> {
-        return this.httpClient.get<C>(this.buildUrl('', filter))
+        let urlBuilder = new UrlBuilder(this.basePath);
+        urlBuilder.addFilter(filter);
+
+        return this.httpClient.get<C>(urlBuilder.url)
             .pipe(
                 tap((data: C) => this.setCollectionData(data)),
                 catchError(this.handleError<C>('getList', null))
@@ -111,7 +184,8 @@ export class BaseApiService<T extends BaseData, C extends BaseCollection<T>> {
      * Get a single entity from the API.
      */
     getItem(uuid: string): Observable<T> {
-        return this.httpClient.get<T>(this.buildUrl(uuid))
+        let urlBuilder = new UrlBuilder(this.basePath);
+        return this.httpClient.get<T>(urlBuilder.addUuid(uuid).url)
             .pipe(
                 tap((data: T) => this.setSelectedData(data)),
                 catchError(this.handleError<T>('getItem', null))
@@ -122,21 +196,24 @@ export class BaseApiService<T extends BaseData, C extends BaseCollection<T>> {
      * Create a single entity.
      */
     create(data: T): Observable<T> {
-        return this.httpClient.post<T>(this.buildUrl(), data);
+        let urlBuilder = new UrlBuilder(this.basePath);
+        return this.httpClient.post<T>(urlBuilder.url, data);
     }
 
     /**
      * Update a single existing entity.
      */
     update(uuid: string, data: T): Observable<T> {
-        return this.httpClient.put<T>(this.buildUrl(uuid), data);
+        let urlBuilder = new UrlBuilder(this.basePath);
+        return this.httpClient.put<T>(urlBuilder.addUuid(uuid).url, data);
     }
 
     /**
      * Delete a single existing entity.
      */
     delete(uuid: string): Observable<T> {
-        return this.httpClient.delete<T>(this.buildUrl(uuid));
+        let urlBuilder = new UrlBuilder(this.basePath);
+        return this.httpClient.delete<T>(urlBuilder.addUuid(uuid).url);
     }
 
     /**
@@ -146,25 +223,14 @@ export class BaseApiService<T extends BaseData, C extends BaseCollection<T>> {
      *  getListFromResource('users', 'uuid')
      */
     getListFromResource(resource: string, resourceUuid: string, filter: Filter | null = null): Observable<C> {
-        return this.httpClient.get<C>(this.buildUrl(resourceUuid, filter, resource))
+        let urlBuilder = new UrlBuilder(this.basePath);
+        urlBuilder.addFilter(filter).addPreresource(resource).addPreresourceUuid(resourceUuid);
+
+        return this.httpClient.get<C>(urlBuilder.url)
             .pipe(
                 tap((data: C) => this.setCollectionData(data)),
                 catchError(this.handleError<C>('getList', null))
             );
-    }
-
-    protected buildUrl(uuid: string = '', filter: Filter | null = null, resource: string | null = null): string {
-        let outUrl = environment.apiUrl + '/'; 
-
-        outUrl += (resource !== null ? resource : this.basePath);
-        outUrl += '/' + uuid;
-        outUrl += (resource !== null ? '/' + this.basePath : '');
-
-        if (filter === null) {
-            return outUrl;
-        } else {
-            return outUrl + filter.toString();
-        }
     }
 
     protected setCollectionData(data: C | null): void
